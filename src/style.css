@@ -1,0 +1,142 @@
+html {
+	height: 100%;
+	font-size: 10px;
+}
+
+body {
+	min-width: 400px;
+	height: 100%;
+	margin: 0;
+	font-family: 'Inter', sans-serif;
+	font-size: 1.6rem;
+}
+
+#root {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+/***************header***************/
+
+header {
+	padding: 10px 30px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: hsl(0deg, 0%, 100%);
+	font-size: 1.4rem;
+	background: linear-gradient(90deg, hsl(284, 58%, 32%) 1.18%, hsl(284, 69%, 49%) 100%);
+}
+
+header div {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+header img {
+	width: 45px;
+}
+
+header h1 {
+	font-weight: 600;
+}
+
+header h3 {
+	font-weight: normal;
+}
+
+/***************main***************/
+
+main {
+	padding: 50px;
+	flex-grow: 1;
+}
+
+/***************form***************/
+
+form {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+.input-fields {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 20px 30px;
+}
+
+.input-fields input {
+	padding: 15px;
+	flex: 1 1;
+	font-family: inherit;
+	font-size: 1.6rem;
+	border: 1.5px solid hsl(255, 5%, 84%);
+	border-radius: 7px;
+}
+
+.submit {
+	padding: 15px 0;
+	color: hsl(0deg, 0%, 100%);
+	font-family: inherit;
+	font-size: 2rem;
+	font-weight: 600;
+	border: 0;
+	border-radius: 7px;
+	background: linear-gradient(90deg, hsl(284, 58%, 32%) 1.18%, hsl(284, 69%, 49%) 100%);
+	cursor: pointer;
+}
+
+/***************meme***************/
+
+.meme {
+	position: relative;
+	margin-top: 50px;
+	display: flex;
+	justify-content: center;
+}
+
+.meme img {
+	max-width: min(500px, 100%);
+	border-radius: 7px;
+	box-shadow: 0 30px 60px -12px hsla(240deg, 30%, 28%, 0.25),
+				0 18px 36px -18px hsla(0deg, 0%, 0%, 0.3);
+}
+
+.text {
+	position: absolute;
+	width: 85%;
+	text-align: center;
+	left: 50%;
+	transform: translateX(-50%);
+	margin: 15px 0;
+	padding: 0 5px;
+	font-family: impact, sans-serif;
+	font-size: 2em;
+	text-transform: uppercase;
+	color: hsl(0deg, 0%, 100%);
+	letter-spacing: 1px;
+	text-shadow:
+		2px 2px 0 hsl(0deg, 0%, 0%),
+		-2px -2px 0 hsl(0deg, 0%, 0%),
+		2px -2px 0 hsl(0deg, 0%, 0%),
+		-2px 2px 0 hsl(0deg, 0%, 0%),
+		0 2px 0 hsl(0deg, 0%, 0%),
+		2px 0 0 hsl(0deg, 0%, 0%),
+		0 -2px 0 hsl(0deg, 0%, 0%),
+		-2px 0 0 hsl(0deg, 0%, 0%),
+		2px 2px 5px hsl(0deg, 0%, 0%);
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+}
+
+.bottom {
+	bottom: 0;
+}
+
+.top {
+	top: 0;
+}
