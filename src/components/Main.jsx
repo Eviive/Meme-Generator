@@ -2,21 +2,29 @@ import React from "react";
 
 import Text from "./Text.jsx";
 
+const random = max => Math.floor(Math.random() * max);
+
 export default function Meme() {
 	let [formData, setFormData] = React.useState({
 		value: "",
-		randomImg: "http://i.imgflip.com/1bij.jpg",
-		altImg: "One Does Not Simply"
+		randomImg: "",
+		altImg: ""
 	});
-
 	let [allMemes, setAllMemes] = React.useState([]);
-
 	let [allTexts, setAllTexts] = React.useState([]);
 
 	React.useEffect(() => {
 		fetch("https://api.imgflip.com/get_memes")
-			.then(res => res.json())
-			.then(dataAPI => setAllMemes(dataAPI.data.memes));
+			.then(resAPI => resAPI.json())
+			.then(res => {
+				const memesAPI = res.data.memes;
+				setAllMemes(memesAPI)
+				setFormData(prevFormData => ({
+					...prevFormData,
+					randomImg: memesAPI[random(memesAPI.length)].url,
+					altImg: memesAPI[random(memesAPI.length)].name
+				}));
+			});
 	}, [])
 
 	function handleNewText(event) {
@@ -41,17 +49,16 @@ export default function Meme() {
 	}
 
 	function handleNewMeme() {
-		const randIndex = Math.floor(Math.random() * allMemes.length);
 		setAllTexts([]);
+		const newMeme = allMemes[random(allMemes.length)];
 		setFormData(prevFormData => ({
 			...prevFormData,
-			randomImg: allMemes[randIndex].url,
-			altImg: allMemes[randIndex].name
+			randomImg: newMeme.url,
+			altImg: newMeme.name
 		}));
 	}
 
-	let cpt = 0;
-	const textsElements = allTexts.map(content => <Text key={cpt++} text={content} />);
+	const textsElements = allTexts.map((content, id) => <Text key={id} text={content} />);
 	
 	return (
 		<main>
@@ -64,13 +71,9 @@ export default function Meme() {
 						value={formData.value}
 						onChange={handleChange}
 					/>
-					<button className="plus">
-						+
-					</button>
+					<button className="plus">+</button>
 				</form>
-				<button className="submit" onClick={handleNewMeme}>
-					Get a new meme image
-				</button>
+				<button className="submit" onClick={handleNewMeme}>Get a new meme</button>
 			</div>
 			<div className="meme">
 				<img src={formData.randomImg} alt={formData.altImg} />
