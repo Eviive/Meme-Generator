@@ -1,14 +1,17 @@
 import React from "react";
 
+import Text from "./Text.jsx";
+
 export default function Meme() {
 	let [formData, setFormData] = React.useState({
-		topText: "",
-		bottomText: "",
+		value: "",
 		randomImg: "http://i.imgflip.com/1bij.jpg",
 		altImg: "One Does Not Simply"
 	});
 
 	let [allMemes, setAllMemes] = React.useState([]);
+
+	let [allTexts, setAllTexts] = React.useState([]);
 
 	React.useEffect(() => {
 		fetch("https://api.imgflip.com/get_memes")
@@ -16,55 +19,62 @@ export default function Meme() {
 			.then(dataAPI => setAllMemes(dataAPI.data.memes));
 	}, [])
 
-	function handleChange(event) {
-		let {name, value} = event.target;
-		if (name === "topText" || name === "bottomText") {
+	function handleNewText(event) {
+		event.preventDefault();
+		if (formData.value) {
+			setAllTexts(prevAllTexts => [...prevAllTexts, formData.value]);
 			setFormData(prevFormData => ({
 				...prevFormData,
-				[name]: value
+				value: ""
 			}));
 		}
 	}
 
-	function handleSubmit(event) {
-		event.preventDefault();
-		const randIndex = Math.floor(Math.random() * allMemes.length);
-		setFormData(prevFormData => (
-			{
+	function handleChange(event) {
+		let {name, value} = event.target;
+		if (name === "text") {
+			setFormData(prevFormData => ({
 				...prevFormData,
-				randomImg: allMemes[randIndex].url,
-				altImg: allMemes[randIndex].name
-			}
-		));
+				value: value
+			}));
+		}
 	}
+
+	function handleNewMeme() {
+		const randIndex = Math.floor(Math.random() * allMemes.length);
+		setAllTexts([]);
+		setFormData(prevFormData => ({
+			...prevFormData,
+			randomImg: allMemes[randIndex].url,
+			altImg: allMemes[randIndex].name
+		}));
+	}
+
+	let cpt = 0;
+	const textsElements = allTexts.map(content => <Text key={cpt++} text={content} />);
 	
 	return (
 		<main>
-			<form onSubmit={handleSubmit}>
-				<div className="input-fields">
+			<div className="wrapper">
+				<form onSubmit={handleNewText}>
 					<input
 						type="text"
-						name="topText"
-						placeholder="Top text"
-						value={formData.topText}
+						name="text"
+						placeholder="Add a new text"
+						value={formData.value}
 						onChange={handleChange}
 					/>
-					<input
-						type="text"
-						name="bottomText"
-						placeholder="Bottom text"
-						value={formData.bottomText}
-						onChange={handleChange}
-					/>
-				</div>
-				<button className="submit">
+					<button className="plus">
+						+
+					</button>
+				</form>
+				<button className="submit" onClick={handleNewMeme}>
 					Get a new meme image
 				</button>
-			</form>
+			</div>
 			<div className="meme">
 				<img src={formData.randomImg} alt={formData.altImg} />
-				{formData.topText && <span className="text top">{formData.topText}</span>}
-                {formData.bottomText && <span className="text bottom">{formData.bottomText}</span>}
+				{textsElements}
 			</div>
 		</main>
 	);
